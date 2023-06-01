@@ -1,0 +1,128 @@
+//HTML
+<div id="app">
+<input type="text" id="search-input"/>
+<section class="suggestion-container" id="suggestionListWrapper"></section>
+</div>
+
+
+//CSS
+#app{
+  width:400px;
+  position:relative;
+  display:inline-block;
+}
+
+input{
+  width:100%;
+  height:50px;
+  border-radius:4px;
+  outline:none;
+  border-width:1px;
+}
+
+input:focus{
+  border:2px solid rgb(190,190,253);
+  
+}
+
+.suggestion-container{
+  display:none;
+  maxheight:300px;
+  overflow-y:scroll;
+  border:1px solid silver;
+}
+
+.suggestionVisible{
+  display:block;
+}
+
+//JS
+
+const Fruits = ["Apple","Mango","Lemon","Orange"]
+
+function debounce(fn,delay=500){
+  let timer;
+  return function(...args){
+    let context = this;
+    if(timer) clearTimeout(timer)
+    timer = setTimeout(()=>{fn.apply(context,args)},delay)
+  }
+}
+
+async function getSuggestions(keyword){
+  
+  const result = Fruits.filter((item)=>item.substr(0,keyword.length).toLowerCase()===keyword.toLowerCase())
+  
+  console.log(result);
+  
+  return new Promise((resolve,reject)=>{
+    setTimeout(()=>resolve(result),1000)
+  })
+}
+
+const inputBox = document.getElementById("search-input");
+const suggestionBox = document.getElementById('suggestionListWrapper');
+
+const resetState = ()=>{
+   suggestionBox.classList.remove("suggestionVisible");
+}
+
+const renderDropItems = (list=[]) =>{
+  const suggFragment = document.createDocumentFragment();
+  
+  list.forEach((item)=>{
+    const el = document.createElement("div");
+    el.innerHTML = item;
+    el.classList.add("dropdown-item");
+    el.setAttribute('data-key',item);
+    suggFragment.appendChild(el);
+  })
+  suggestionBox.innerHTML = ""
+  suggestionBox.appendChild(suggFragment);
+}
+
+const handleSearch = async(keyword)=>{
+  const result = await getSuggestions(keyword);
+  if(result.length){
+    suggestionBox.classList.add("suggestionVisible");
+    renderDropItems(result)
+  }
+}
+
+const handleInputChange = (event)=>{
+  const value = event.target.value;
+  if(value){
+    handleSearch(value);
+  }else{
+    resetState()
+  }
+}
+
+const handleSelect = (event) =>{
+  //we are handling key because you may select empty value(padding value in list)
+  const {key} = event?.target?.dataset;
+  if(key){
+    inputBox.value = key;
+    resetState();
+  }
+}
+
+(()=>{
+  inputBox.addEventListener("input",debounce(handleInputChange,500))
+  //event delegation
+  suggestionBox.addEventListener('click',handleSelect)
+})()
+
+/*
+ABORT CONTROLLER EXAMPLE()
+APPLE 
+A -> 200MS RESOLVE
+
+APPLE-> 100MS RESOLVE
+
+TO CANCEL PREFLIGHT AND RESPONSE OF PREVIOUS PENDING REQUEST USE THIS
+
+const controller = new AbortController();
+const res = fetch("url",{signal : controller.signal });
+controller.abort();
+*/
