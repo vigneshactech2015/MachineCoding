@@ -1,17 +1,16 @@
+import "./styles.css";
 import { useState, useEffect } from "react";
 
 export default function App() {
   const [countries, setCountries] = useState([]);
-  const [countryMatch, setCountryMatch] = useState([]);
   const [search, setSearch] = useState("");
-
+  const [countriesMatch, setCountriesMatch] = useState([]);
   const url = `https://restcountries.com/v2/all`;
 
-  async function getCountries() {
-    let result = await fetch(url)
-      .then((res) => res.json())
-      .then((data) => setCountries(data));
-    return result;
+  function getCountries() {
+    fetch(url)
+      .then((data) => data.json())
+      .then((res) => setCountries(res));
   }
 
   useEffect(() => {
@@ -21,38 +20,41 @@ export default function App() {
   function handleSearch(e) {
     if (e.target.value) {
       setSearch(e.target.value);
-      let matches = countries.filter((country) => {
-        const regex = new RegExp(`${e.target.value}`, "gi");
-        return country?.name?.match(regex) || country?.capital?.match(regex);
+     let result =  countries.filter((country) => {
+        let len = e.target.value.length;
+        if(country?.name?.substr(0, len).toLowerCase() === e.target.value || country?.capital?.substr(0, len).toLowerCase() === e.target.value){
+          return country
+        }
       });
-      setCountryMatch(matches);
+      setCountriesMatch(result)
     } else {
-      setCountryMatch([]);
       setSearch("");
+      setCountriesMatch([]);
     }
   }
 
-  function suggestionClick(val) {
-    setSearch(val?.name || val?.capital);
+  console.log(">>countriesmatch", countriesMatch);
+  function handleSuggestion(item) {
+    setSearch(item.name || item.capital);
   }
 
   return (
     <div className="App">
       <input
         type="text"
-        placeholder="enter capital/country name"
-        onChange={(e) => handleSearch(e)}
+        placeholder="enter capital/country"
         value={search}
+        onChange={handleSearch}
       />
-
-      {countryMatch &&
-        countryMatch?.map((item, index) => {
+      {countriesMatch &&
+        countriesMatch?.map((item, index) => {
           return (
-            <div key={index}>
-              <span onClick={() => suggestionClick(item)}>
-                Country : {item.name}
-                Capital : {item.capital}
-              </span>
+            <div>
+              hello
+            <div key={index} onClick={() => handleSuggestion(item)}>
+              country : {item.name}
+              capital : {item.capital}
+            </div>
             </div>
           );
         })}
