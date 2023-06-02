@@ -1,0 +1,61 @@
+import { useState, useEffect } from "react";
+
+export default function App() {
+  const [countries, setCountries] = useState([]);
+  const [countryMatch, setCountryMatch] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const url = `https://restcountries.com/v2/all`;
+
+  async function getCountries() {
+    let result = await fetch(url)
+      .then((res) => res.json())
+      .then((data) => setCountries(data));
+    return result;
+  }
+
+  useEffect(() => {
+    getCountries();
+  }, []);
+
+  function handleSearch(e) {
+    if (e.target.value) {
+      setSearch(e.target.value);
+      let matches = countries.filter((country) => {
+        const regex = new RegExp(`${e.target.value}`, "gi");
+        return country?.name?.match(regex) || country?.capital?.match(regex);
+      });
+      setCountryMatch(matches);
+    } else {
+      setCountryMatch([]);
+      setSearch("");
+    }
+  }
+
+  function suggestionClick(val) {
+    setSearch(val?.name || val?.capital);
+  }
+
+  return (
+    <div className="App">
+      <input
+        type="text"
+        placeholder="enter capital/country name"
+        onChange={(e) => handleSearch(e)}
+        value={search}
+      />
+
+      {countryMatch &&
+        countryMatch?.map((item, index) => {
+          return (
+            <div key={index}>
+              <span onClick={() => suggestionClick(item)}>
+                Country : {item.name}
+                Capital : {item.capital}
+              </span>
+            </div>
+          );
+        })}
+    </div>
+  );
+}
