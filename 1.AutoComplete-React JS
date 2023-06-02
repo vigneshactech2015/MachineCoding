@@ -17,6 +17,22 @@ export default function App() {
     getCountries();
   }, []);
 
+/*
+ function handleSearch(e) {
+    if (e.target.value) {
+      setSearch(e.target.value);
+      let matches = countries.filter((country) => {
+        const regex = new RegExp(`${e.target.value}`, "gi");
+        return country?.name?.match(regex) || country?.capital?.match(regex);
+      });
+      setCountryMatch(matches);
+    } else {
+      setCountryMatch([]);
+      setSearch("");
+    }
+  }
+*/
+
   function handleSearch(e) {
     if (e.target.value) {
       setSearch(e.target.value);
