@@ -1,0 +1,108 @@
+import React,{useState} from 'react';
+
+function TicTacToe() {
+  return (
+    <div>
+    <Board/>
+    </div>
+  )
+}
+
+function Board(){
+    const [isX , setIsX] = useState(true)
+    const [squares , setSquares] = useState(Array(9).fill(null))
+
+    const handleClick = (i)=>{
+        //if already someone is winner then avoid handleClick
+        if(calculateWinner(squares) || squares[i]){
+            return;
+        }
+
+        squares[i] = isX ? 'X' : 'O';
+        setSquares(squares);
+        setIsX(!isX);
+    }
+
+    const handleReset =()=>{
+        setSquares(Array(9).fill(null))
+        setIsX(true)
+    }
+
+    const winner = calculateWinner(squares)
+    let status
+
+    if(winner){
+        status = `Winner : ${winner}`;
+    }else{
+        status = `Next player : ${isX ? 'x' : 'O'}`;
+    }
+
+    return (
+        <div className="container">
+        <div className="row">
+        <Square onClick={()=>handleClick(0)} value={squares[0]}/>
+        <Square onClick={()=>handleClick(1)} value={squares[1]}/>
+        <Square onClick={()=>handleClick(2)} value={squares[2]}/>
+        </div>
+
+        <div className="row">
+        <Square onClick={()=>handleClick(3)} value={squares[3]}/>
+        <Square onClick={()=>handleClick(4)} value={squares[4]}/>
+        <Square onClick={()=>handleClick(5)} value={squares[5]}/>
+        </div>
+
+
+        <div className="row">
+        <Square onClick={()=>handleClick(6)} value={squares[6]}/>
+        <Square onClick={()=>handleClick(7)} value={squares[7]}/>
+        <Square onClick={()=>handleClick(8)} value={squares[8]}/>
+        </div>
+        <h1>{status}</h1>
+        <div onClick = {handleReset}> Reset </div>
+        </div>
+    )
+}
+
+function Square({onClick,value}){
+    return <button onClick={onClick}>{value}</button>
+}
+
+function calculateWinner(squares){
+    const winningPatterns = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+    ]
+
+    for(let i=0; i<winningPatterns.length; i++){
+        const [a,b,c] = winningPatterns[i]
+        //this part alone mug up
+        if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
+            return squares[a]
+        }
+    }
+    return null;
+}
+
+export default TicTacToe
+
+//css
+
+.row{
+    display: flex;
+}
+
+button{
+    height:100px;
+    width:100px;
+}
+
+body{
+    margin-left:35%;
+    margin-top: 10%;
+}
