@@ -1,0 +1,40 @@
+//css
+
+.container{
+  border:2px solid transparent;
+  background-color: red;
+  color:white;
+  text-align: right;
+}
+
+
+//React JS
+
+import "./styles.css";
+import { useState } from "react";
+
+export default function App() {
+  return (
+    <div className="App">
+      <Accordion>
+        <p>Sometext</p>
+        <p>Some text line 2</p>
+      </Accordion>
+    </div>
+  );
+}
+
+function Accordion(props) {
+  const [toggle, setToggle] = useState(false);
+
+  return (
+    <div>
+      <div className="container">
+        <span onClick={() => setToggle(!toggle)}>
+          {toggle ? "Expand Less" : "Expand More"}
+        </span>
+      </div>
+      {toggle && <div>{props.children}</div>}
+    </div>
+  );
+}
