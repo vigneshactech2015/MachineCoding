@@ -1,0 +1,71 @@
+import React,{useState,useRef,useEffect,useCallback} from 'react'
+import axios from 'axios'
+
+function Infinite() {
+    const [data,setData] = useState([])
+    const [search,setSearch] = useState("")
+    const [pageNumber, setPageNumber] = useState(1)
+    const [loading,setLoading] = useState(false)
+    const [intersectionLoading ,setIntersectionLoading] = useState(false)
+
+    const observer = useRef()
+
+    function handleSearch(value){
+        setLoading(true)
+        setSearch(value)
+        setPageNumber(1)
+    }
+
+    useEffect(()=>{
+        const debouncing = setTimeout(()=>{
+            axios.get(`http://openlibrary.org/search.json?q=${search.toLowerCase()}&page=${pageNumber}`).then((res)=>{
+                setData((prev)=>{return [...prev,...res.data.docs.map((val)=>val.title)]});
+                setLoading(false)
+        })
+        },200);
+
+        return ()=>{
+            clearTimeout(debouncing);
+        }
+    },[search,pageNumber])
+
+    let endOfThePage = useCallback((val)=>{
+        if(loading) return;
+
+        if(observer.current){
+            observer.current.disconnect()
+            setIntersectionLoading(false)
+        }
+
+        observer.current = new IntersectionObserver((item)=>{
+            if(item[0].isIntersecting){
+                setIntersectionLoading(true)
+                setPageNumber((prev)=>prev+1)
+            }
+        })
+
+        if(val) observer.current.observe(val);
+    },[loading])
+
+
+    //TYPE harry
+  return (
+    <div>
+    <input type="text" placeholder="Search Something" value={search} onChange={(e)=>handleSearch(e.target.value)}/>
+    {loading ? <p>loading...</p>:(
+        <ul>
+        {data.map((book,index)=>{
+            if(data.length === index+1){
+                return <li key={index} ref={endOfThePage}>{book}</li>
+            }else{
+                return <li key={index}>{book}</li>
+            }
+        })}
+        {intersectionLoading && <p style={{color:"green"}}>LoaDinG</p>}
+        </ul>
+    )}
+    </div>
+  )
+}
+
+export default Infinite
