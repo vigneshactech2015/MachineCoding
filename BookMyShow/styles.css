@@ -1,0 +1,33 @@
+.seat {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+  }
+  
+  .seatGroup {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .seatGroup_column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .seatGroup_label {
+    margin-bottom: 10px;
+    border-bottom: 1px solid gray;
+  }
+  
+  .seatRow {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .seatRow_2ndRow {
+    display: flex;
+    gap: 14px;
+  }
+  
