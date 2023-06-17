@@ -4,18 +4,18 @@ import { useSelector } from "react-redux";
 import {useState} from "react"
 
 export default function MultiEdit(){
-    const [formFields , setFormFields] = useState([{key:'',value:'',action0:'',errors:{key:null,value:null,action0:null}}])
+    const [formFields , setFormFields] = useState([{key:'',value:'',action:'',errors:{key:null,value:null,action:null}}])
     const configSearchData = useSelector((state)=>state.appconfig.configParams.data.search.projects)
     const [dropDownFields, setDropDownFields] = useState([{project:"",platform:"",config:"",build:"",environment:"",errors:{project:null,platform:null,config:null,build:null,environment:null}}])
     const[updates , setUpdates] = useState([])
   
     const formIsValid = () => {
-      if (formFields.length === 1 && formFields[0].key!=="" && formFields[0].value!=="" && formFields[0].action0!=="") {
+      if (formFields.length === 1 && formFields[0].key!=="" && formFields[0].value!=="" && formFields[0].action!=="") {
         return true;
       }
   
       const someEmpty = formFields.some(
-        (item,iz) => item.key === "" || item.value === "" || item[`action${iz}`] === ""
+        (item,iz) => item.key === "" || item.value === "" || item[`action`] === ""
       );
   
       if (someEmpty) {
@@ -30,13 +30,18 @@ export default function MultiEdit(){
             allPrev[index].errors.value = "Value is required";
           }
   
-          if (formFields[index][`action${index}`] === "") {
-            allPrev[index].errors[`action${index}`] = "Action is required";
+          if (formFields[index][`action`] === "") {
+            allPrev[index].errors[`action`] = "Action is required";
           }
           setFormFields(allPrev);
         });
       }
   
+     
+      return !someEmpty;
+    };
+  
+    const checkSameKeyName = () => {
       const allFields = [...formFields]
       for(let x=0;x<formFields.length;x++){
         for(let y=x+1;y<formFields.length;y++){
@@ -46,9 +51,7 @@ export default function MultiEdit(){
         }
         setFormFields(allFields)
       }
-      return !someEmpty;
-    };
-  
+    }
     
     const DropDownIsValid = () => {
       if (dropDownFields.length === 1 && dropDownFields[0].project!=="" && dropDownFields[0].platform!=="" && dropDownFields[0].config!=="" && dropDownFields[0].build!=="" && dropDownFields[0].environment!=="") {
@@ -123,11 +126,12 @@ export default function MultiEdit(){
       e.preventDefault();
       let formCondition = formIsValid() ;
       let dropDownCondition = DropDownIsValid();
-      if(formCondition && dropDownCondition){
+      let samename = checkSameKeyName();
+      if(formCondition && dropDownCondition && samename){
         let newFormFields = [...formFields]
         let updates = newFormFields.map((item,i)=>{
           return{
-            action:item[`action${i}`],
+            action:item[`action`],
             key:item.key,
             value:item.value
           }
@@ -155,14 +159,12 @@ export default function MultiEdit(){
     }
   
     function addMoreFields(index){
-      let newField = `action${index+1}`
-      let data = {key:'',value:'',[newField]:"",errors:{key:null,value:null,[newField]:null}};
+      let data = {key:'',value:'',action:"",errors:{key:null,value:null,action:null}};
       setFormFields((prev)=>[...prev,data])
     }
   
     function addMoreDropDownFields(index){
       let data = dropDownFields[dropDownFields?.length-1 || 0];
-      console.log('>>>data',data)
       setDropDownFields((prev)=>[...prev,data])
     }
   
@@ -429,11 +431,11 @@ export default function MultiEdit(){
                 <div className="appconfig_multiedit_alignvalidation">
                 <div className="appconfig_multiedit_alignradio">
   
-                <input type="radio" className="appconfig_multiedit_radio" name={`action${index}`} id="add" checked={formfield[`action${index}`]==="add_or_update"} value="add_or_update" onChange={(e)=>handleChange(e,index,`action${index}`)}/><label htmlFor="add">Add or Edit</label>
-                <input type="radio" className="appconfig_multiedit_radio" name={`action${index}`} id="delete" checked={formfield[`action${index}`]==="delete"} value="delete" onChange={(e)=>handleChange(e,index,`action${index}`)}/><label htmlFor="delete">Delete</label>
+                <input type="radio" className="appconfig_multiedit_radio" name={`action${index}`} id="add" checked={formfield[`action`]==="add_or_update"} value="add_or_update" onChange={(e)=>handleChange(e,index,`action`)}/><label htmlFor="add">Add or Edit</label>
+                <input type="radio" className="appconfig_multiedit_radio" name={`action${index}`} id="delete" checked={formfield[`action`]==="delete"} value="delete" onChange={(e)=>handleChange(e,index,`action`)}/><label htmlFor="delete">Delete</label>
                 </div>
-                {formfield.errors[`action${index}`] && (
-                  <div className="appconfig_multiedit_validationtext">{formfield.errors[`action${index}`]}</div>
+                {formfield.errors[`action`] && (
+                  <div className="appconfig_multiedit_validationtext">{formfield.errors[`action`]}</div>
                 )}
                 </div>
                 <div className="appconfig_multiedit_dynamicbtn">
