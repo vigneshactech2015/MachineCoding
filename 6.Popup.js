@@ -14,3 +14,44 @@ function Popup() {
 }
 
 export default Popup
+
+
+//Popup on hover
+
+import React, { useState } from "react";
+
+const Popup = () => {
+  const [isPopupVisible, setPopupVisible] = useState(false);
+
+  const handleMouseEnter = () => {
+    setPopupVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setPopupVisible(false);
+  };
+
+  return (
+    <div className="container">
+      <button
+        className="show-button"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        Show Popup
+      </button>
+      {isPopupVisible && (
+        <div
+          style={{ border: "2px solid red" }}
+          className="popup-container"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className="popup">This is the popup content.</div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Popup;
