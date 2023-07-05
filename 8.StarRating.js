@@ -1,39 +1,21 @@
-//css
-.star-rating {
-  display: inline-block;
-  font-size: 24px;
-}
-
-.star {
-  cursor: pointer;
-  color: #ccc;
-}
-
-.filled {
-  color: #fdd835;
-}
-
-//react jsx
-
-import React, { useState } from 'react';
-import './styles.css';
+import React, { useState } from "react";
+import "./styles.css";
 
 const App = () => {
   const [rating, setRating] = useState(0);
 
-  const handleStarClick = (selectedRating) => {
-    setRating(selectedRating);
-  };
+  function starhandler(value) {
+    setRating(value);
+  }
 
   return (
-    <div className="star-rating">
-      {[...Array(5)].map((_, index) => {
-        const starValue = index + 1;
+    <div className="star-container">
+      {[...Array(5)].map((ar, index) => {
+        const val = index + 1;
         return (
           <span
-            key={index}
-            className={starValue <= rating ? 'star filled' : 'star'}
-            onClick={() => handleStarClick(starValue)}
+            className={val <= rating ? "unfill" : "fill"}
+            onClick={() => starhandler(val)}
           >
             &#9733;
           </span>
@@ -44,3 +26,18 @@ const App = () => {
 };
 
 export default App;
+
+//css
+
+.star-container {
+  display: flex;
+}
+
+.unfill {
+  color: yellow;
+}
+
+.fill {
+  color: grey;
+}
+
