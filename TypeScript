@@ -30,3 +30,15 @@ console.log(nonnullish.href)
 if you don't specify ! then there will be red lines on href
 
 -----------------------
+
+GENERICS
+
+const addUID = <T>(obj:T) => {
+  let uid = Math.floor(Math.random()*100)
+  return {...obj,uid}
+}
+
+let docOne = addUID({name:'vignesh',age:26})
+console.log(docOne.name)
+
+------------------------------
