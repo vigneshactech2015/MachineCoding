@@ -1,0 +1,15 @@
+// change Event
+type Props = {
+ changeHandler : (event : React.ChangeEvent<HTMLInputElement> ) => void 
+}
+
+//click Event 
+type Props = {
+  clickHandler : (event : React.MouseEvent<HTMLElement> , id: number) => void;
+}
+
+// style Event
+
+type Props = {
+ styles : React.CSSProperties
+}
