@@ -45,8 +45,8 @@ console.log(docOne.name)
 ------------------------------
 
 ENUMS
-
-each of the element in enums is associated with specific number(index) , so that user don't have to remember and specify the correct number
+//assigning constant variable with number
+//each of the element in enums is associated with specific number(index) , so that user don't have to remember and specify the correct number
 
 enum ResourceType {BOOK,AUTHOR,FILM,DIRECTOR}
 
@@ -59,3 +59,19 @@ const docOne:Resource<object> = {
 }
 
 console.log(docOne)
+
+---------------------------------
+
+TUPLES
+
+// much like array type except element position type is fixed in tuples once it is initialized
+
+Example 
+
+let tupleExample:[string,number,boolean] = ['vignesh',26,true]
+
+tupleExample[0] = 'updatedVignesh' --> works
+tupleExample[0] = false --> wrong because position type mismatch
+
+-----------------------------------
+
