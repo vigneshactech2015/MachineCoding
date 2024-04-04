@@ -33,7 +33,8 @@ if you don't specify ! then there will be red lines on href
 
 GENERICS
 
-const addUID = <T>(obj:T) => {
+//here extends object means only object is allowed by object property can be anything
+const addUID = <T extends object>(obj:T) => {
   let uid = Math.floor(Math.random()*100)
   return {...obj,uid}
 }
