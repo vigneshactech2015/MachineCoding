@@ -43,3 +43,19 @@ let docOne = addUID({name:'vignesh',age:26})
 console.log(docOne.name)
 
 ------------------------------
+
+ENUMS
+
+each of the element in enums is associated with specific number(index) , so that user don't have to remember and specify the correct number
+
+enum ResourceType {BOOK,AUTHOR,FILM,DIRECTOR}
+
+interface Resource {
+resourceType : ResourceType
+}
+
+const docOne:Resource<object> = {
+ resourceType: ResourceType.Book
+}
+
+console.log(docOne)
