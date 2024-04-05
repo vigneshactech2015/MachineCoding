@@ -1,5 +1,7 @@
 -------------------------------
 // change Event
+// this way of mentioning function type is known as function signature(syntatic sugar for mentioning Function keyword)
+()=>void (rather than mentioning Function keyword)
 type Props = {
  changeHandler : (event : React.ChangeEvent<HTMLInputElement> ) => void 
 }
