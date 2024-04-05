@@ -106,3 +106,8 @@ tupleExample[0] = false --> wrong because position type mismatch
 
 -----------------------------------
 
+React Children 
+
+type props = {
+ children : React.ReactNode
+}
