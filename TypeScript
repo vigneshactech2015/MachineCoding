@@ -135,8 +135,8 @@ useRef
 
 const inputRef = useRef<HTMLInputElement>(null)
 
-const onChangeHandler = () => {
- inputRef.current?.focus()
+const onSubmitHandler = () => {
+ console.log(inputRef.current?.value)
 }
 
 <input type="text" ref={inputRef}/>
