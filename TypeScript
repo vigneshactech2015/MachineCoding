@@ -117,6 +117,10 @@ const[state,setState] = useState<AuthUser | null>(null)
 
 setState({username:'vignesh',age:26})
 
+Important:
+Type Assertion Example (same as type casting) using 'as' as keyword
+Here only on componentDidMount it will be null , after that it will never be null .
+const [state,setState] = useState<AuthUser>({} as AuthUser)
 -----------------------
 
 React Children 
