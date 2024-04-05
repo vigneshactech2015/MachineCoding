@@ -34,7 +34,7 @@ if you don't specify ! then there will be red lines on href
 -----------------------
 
 GENERICS
-
+// for dynamic property allocation(which can be of any type in future) we use Generic
 //here extends object means only object is allowed , but object property can be anything
 const addUID = <T extends object>(obj:T) => {
   let uid = Math.floor(Math.random()*100)
@@ -47,20 +47,49 @@ console.log(docOne.name)
 ------------------------------
 
 ENUMS
-//assigning constant variable with number
-//each of the element in enums is associated with specific number(index) , so that user don't have to remember and specify the correct number
 
-enum ResourceType {BOOK,AUTHOR,FILM,DIRECTOR}
+//allow you to define a set of named constants.providing meaningful names to constants
 
-interface Resource {
-resourceType : ResourceType
+// Define an enum for different types of days in a week
+enum Day {
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday
 }
 
-const docOne:Resource<object> = {
- resourceType: ResourceType.Book
+// Function to get the full name of a day based on the enum value
+function getFullDayName(day: Day): string {
+    switch (day) {
+        case Day.Monday:
+            return "Monday";
+        case Day.Tuesday:
+            return "Tuesday";
+        case Day.Wednesday:
+            return "Wednesday";
+        case Day.Thursday:
+            return "Thursday";
+        case Day.Friday:
+            return "Friday";
+        case Day.Saturday:
+            return "Saturday";
+        case Day.Sunday:
+            return "Sunday";
+        default:
+            // This should never happen, but TypeScript requires a default case
+            return "Unknown day";
+    }
 }
 
-console.log(docOne)
+// Using the enum and the function
+let today: Day = Day.Monday;
+console.log("Today is " + getFullDayName(today));
+
+let tomorrow: Day = Day.Tuesday;
+console.log("Tomorrow will be " + getFullDayName(tomorrow));
 
 ---------------------------------
 
