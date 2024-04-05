@@ -128,3 +128,15 @@ React Children
 type props = {
  children : React.ReactNode
 }
+
+-------------------------
+
+useRef 
+
+const inputRef = useRef<HTMLInputElement>(null)
+
+const onChangeHandler = () => {
+ inputRef.current?.focus()
+}
+
+<input type="text" ref={inputRef}/>
