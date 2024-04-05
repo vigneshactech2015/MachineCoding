@@ -106,6 +106,19 @@ tupleExample[0] = false --> wrong because position type mismatch
 
 -----------------------------------
 
+React UseState
+
+type AuthUser = {
+ name : string
+ age : boolean
+}
+
+const[state,setState] = useState<AuthUser | null>(null)
+
+setState({username:'vignesh',age:26})
+
+-----------------------
+
 React Children 
 
 type props = {
