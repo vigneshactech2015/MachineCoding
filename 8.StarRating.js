@@ -1,43 +1,25 @@
-import React, { useState } from "react";
-import "./styles.css";
+import { useState } from "react";
 
-const App = () => {
-  const [rating, setRating] = useState(0);
+export default function App() {
+  const [clickedRating, setClickedRating] = useState();
 
-  function starhandler(value) {
-    setRating(value);
-  }
+  const onClickHandler = (rating) => {
+    setClickedRating(rating);
+  };
 
   return (
-    <div className="star-container">
-      {[...Array(5)].map((ar, index) => {
-        const val = index + 1;
-        return (
-          <span
-            className={val <= rating ? "unfill" : "fill"}
-            onClick={() => starhandler(val)}
-          >
-            &#9733;
+    <div className="App" style={{ display: "flex" }}>
+      {[1, 2, 3, 4, 5].map((rating, index) => (
+        <div
+          style={{ fontSize: "30px" }}
+          key={index}
+          onClick={() => onClickHandler(rating)}
+        >
+          <span style={{ color: rating <= clickedRating ? "red" : "" }}>
+            &#9734;
           </span>
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
-};
-
-export default App;
-
-//css
-
-.star-container {
-  display: flex;
 }
-
-.unfill {
-  color: yellow;
-}
-
-.fill {
-  color: grey;
-}
-
