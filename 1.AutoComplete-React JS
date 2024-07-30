@@ -29,6 +29,8 @@ export default function App() {
       });
       if (filteredDatas.length >= 1) {
         setDatas(filteredDatas);
+      } else {
+        setDatas([{ name: "No data" }]);
       }
     } else {
       getDatas();
