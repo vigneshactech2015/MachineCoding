@@ -37,6 +37,9 @@ GENERICS
 // for dynamic property allocation(which can be of any type in future) we use Generic
 // here extends object means only object is allowed , but object property can be anything
 // T can be any type, and TypeScript will infer it when you use the function.
+
+// PROS : You don’t have to rewrite the same function for different types.
+
 const addUID = <T extends object>(obj:T) => {
   let uid = Math.floor(Math.random()*100)
   return {...obj,uid}
